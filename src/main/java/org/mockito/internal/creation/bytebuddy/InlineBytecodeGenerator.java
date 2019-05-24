@@ -311,7 +311,7 @@ public class InlineBytecodeGenerator implements BytecodeGenerator, ClassFileTran
         private static class MethodParameterStrippingMethodVisitor extends MethodVisitor {
 
             public MethodParameterStrippingMethodVisitor(MethodVisitor mv) {
-                super(Opcodes.ASM5, mv);
+                super(Opcodes.ASM7, mv);
             }
 
             @Override
