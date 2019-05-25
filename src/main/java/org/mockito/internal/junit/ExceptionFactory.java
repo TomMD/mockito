@@ -21,21 +21,23 @@ public class ExceptionFactory {
         ExceptionFactoryImpl theFactory = null;
 
         try {
+            Class.forName("org.opentest4j.AssertionFailedError");
             theFactory = new ExceptionFactoryImpl() {
                 @Override
                 public AssertionError create(String message, String wanted, String actual) {
                     return new org.mockito.exceptions.verification.opentest4j.ArgumentsAreDifferent(message, wanted, actual);
                 }
             };
-        } catch (Throwable onlyIfOpenTestIsNotAvailable) {
+        } catch (ClassNotFoundException onlyIfOpenTestIsNotAvailable) {
             try {
+                Class.forName("junit.framework.ComparisonFailure");
                 theFactory = new ExceptionFactoryImpl() {
                     @Override
                     public AssertionError create(String message, String wanted, String actual) {
                         return new org.mockito.exceptions.verification.junit.ArgumentsAreDifferent(message, wanted, actual);
                     }
                 };
-            } catch (Throwable onlyIfJUnitIsNotAvailable) {
+            } catch (ClassNotFoundException onlyIfJUnitIsNotAvailable) {
             }
         }
         factory = (theFactory == null) ? new ExceptionFactoryImpl() {
